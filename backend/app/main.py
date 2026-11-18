@@ -12,7 +12,18 @@ from app.ai.analyzer import analyze_resume,match_job_description
 from app.ai.gemini_coach import generate_coaching
 Base.metadata.create_all(bind=engine)
 app=FastAPI(title="AI Resume Analyzer and Career Coach",version="0.1.0")
-app.add_middleware(CORSMiddleware,allow_origins=[settings.frontend_origin],allow_credentials=True,allow_methods=["*"],allow_headers=["*"])
+origins = [
+    "http://localhost:5173",
+    "https://career-lens-indol-nu.vercel.app",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/api/health")
 def health(): return {"status":"ok"}
 @app.post("/api/auth/register",response_model=UserOut,status_code=201)
